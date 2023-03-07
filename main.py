@@ -6,7 +6,7 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.types import ParseMode
 import telebot
 
-bot1 = telebot.TeleBot('5847538681:AAHMVQpke9e23h83QAraq284q8hwbGY4DwE')
+bot1 = telebot.TeleBot('5619197827:AAHtFunl7mcJaFvgNEol6NCvdVCBt_yZAY0')
 
 class PostState(StatesGroup):
     one = State()

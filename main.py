@@ -20,7 +20,7 @@ class ScamState(StatesGroup):
 banned_users = ['5380685424 , 5272676030 , 731918546 , 1772411051 , 297820198 , 5710190212 , 5657609486 , 5828378741']
 
 storage = MemoryStorage()
-bot = Bot('5847538681:AAHMVQpke9e23h83QAraq284q8hwbGY4DwE')
+bot = Bot('5619197827:AAHtFunl7mcJaFvgNEol6NCvdVCBt_yZAY0')
 dp = Dispatcher(bot=bot,
                 storage=storage)
 def sub():

@@ -160,10 +160,12 @@ async def yes(call: types.CallbackQuery, state: FSMContext):
 
             item1 = InlineKeyboardButton(text='Выложить пост📝', callback_data='post')
             item2 = InlineKeyboardButton(text='Профиль📱', callback_data='profile')
-            item3 = InlineKeyboardButton(text='Проверить пользователя👮🏻', callback_data='user')
+            item3 = InlineKeyboardButton(text='Сообщить о мошенничестве🚨', callback_data='scam')
+            item4 = InlineKeyboardButton(text='Проверить пользователя👮🏻', callback_data='user')
 
             ikb.add(item1, item2)
             ikb.add(item3)
+            ikb.add(item4)
             await call.message.answer(f'<b>Добро пожаловать на автоматическую YouTube Биржу!</b>', reply_markup=ikb,
                                       parse_mode=ParseMode.HTML)
 

@@ -370,6 +370,12 @@ async def yes(call: types.CallbackQuery, state: FSMContext):
 
             @dp.message_handler(content_types=['text'], state=ScamState.onen)
             async def scaam (message: types.Message, state: FSMContext):
+                ikb = InlineKeyboardMarkup()
+
+                item1 = InlineKeyboardButton(text='Закрыть', callback_data='close')
+
+                ikb.add(item1)
+
                 bot1.forward_message(1807653203, call.message.chat.id, message.message_id)
 
                 await message.answer('Отправил!', reply_markup=ikb)
@@ -413,11 +419,22 @@ async def close(call: types.CallbackQuery, state: FSMContext):
         if call.from_user.id in banned_users:
             await call.message.answer('Вы заблокированы⛔')
         else:
-            global userrrr
-            userrrr = call.from_user.username
-
             await call.message.answer('Закрыто!')
-            bot1.send_message(1807653203, f'Жалоба от @{userrrr}')
+            bot1.send_message(1807653203, f'Жалоба от @{call.from_user.username}')
+
+            ikb = InlineKeyboardMarkup()
+
+            item1 = InlineKeyboardButton(text='Выложить пост📝', callback_data='post')
+            item2 = InlineKeyboardButton(text='Профиль📱', callback_data='profile')
+            item3 = InlineKeyboardButton(text='Сообщить о мошенничестве🚨', callback_data='scam')
+            item4 = InlineKeyboardButton(text='Проверить пользователя👮🏻', callback_data='user')
+
+            ikb.add(item1, item2)
+            ikb.add(item3)
+            ikb.add(item4)
+            await call.message.answer(f'<b>Добро пожаловать на автоматическую YouTube Биржу!</b>', reply_markup=ikb,
+                                      parse_mode=ParseMode.HTML)
+
             await state.finish()
     else:
         ikb = InlineKeyboardMarkup(row_width=1)

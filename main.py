@@ -6,7 +6,7 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.types import ParseMode
 import telebot
 
-bot1 = telebot.TeleBot('5619197827:AAHtFunl7mcJaFvgNEol6NCvdVCBt_yZAY0')
+bot1 = telebot.TeleBot('5619197827:AAGHHc2wqibBz9WJfFDcGBxPU-Zy5_AAQD4')
 
 class PostState(StatesGroup):
     one = State()
@@ -20,7 +20,7 @@ class ScamState(StatesGroup):
 banned_users = ['5380685424 , 5272676030 , 731918546 , 1772411051 , 297820198 , 5710190212 , 5657609486 , 5828378741']
 
 storage = MemoryStorage()
-bot = Bot('5619197827:AAHtFunl7mcJaFvgNEol6NCvdVCBt_yZAY0')
+bot = Bot('5619197827:AAGHHc2wqibBz9WJfFDcGBxPU-Zy5_AAQD4')
 dp = Dispatcher(bot=bot,
                 storage=storage)
 def sub():

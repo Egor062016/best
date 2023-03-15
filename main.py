@@ -96,7 +96,7 @@ async def post(call: types.CallbackQuery):
         if call.from_user.id in banned_users:
             await call.message.answer('Вы заблокированы⛔')
         else:
-            await call.message.answer('Отправьте мне объявление\n(Можно добавить до 1 фото/видео)', reply_markup=ikb)
+            await call.message.answer('Отправьте мне объявление\n<b>(Можно добавить до 1 фото/видео)</b>', reply_markup=ikb, parse_mode='HTML')
             await PostState.one.set()
     else:
         ikb = InlineKeyboardMarkup(row_width=1)

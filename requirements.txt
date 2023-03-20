@@ -1,2 +1,6 @@
 pytelegrambotapi
 aiogram
+openai
+openai-async
+asyncio
+datetime

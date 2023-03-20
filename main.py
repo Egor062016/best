@@ -133,13 +133,6 @@ async def handle_message(message: types.Message, state: FSMContext):
         item1 = InlineKeyboardButton(text='Меню', callback_data='menu6')
         ikb.add(item1)
 
-
-        current_time = time.time()
-        if message.from_user.id in last_message_time and current_time - last_message_time[message.from_user.id] < 10:
-            await message.answer(
-                "Вы можете отправлять только одно сообщение раз в 10 секунд. Пожалуйста, повторите попытку позже.")
-            return
-
         sent_message = await message.answer("Обработка запроса...")
 
         # обработка запросов и ответ на запрос

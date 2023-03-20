@@ -6,6 +6,18 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.types import ParseMode
 import telebot
 
+import openai
+import logging
+import time
+import json
+import openai_async
+import asyncio
+import os
+from datetime import datetime
+
+openai.api_key = "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"  # api OpenaAI
+logging.basicConfig(level=logging.INFO)
+
 bot1 = telebot.TeleBot('5619197827:AAGHHc2wqibBz9WJfFDcGBxPU-Zy5_AAQD4')
 
 class PostState(StatesGroup):
@@ -23,6 +35,31 @@ storage = MemoryStorage()
 bot = Bot('5619197827:AAGHHc2wqibBz9WJfFDcGBxPU-Zy5_AAQD4')
 dp = Dispatcher(bot=bot,
                 storage=storage)
+
+class Conversation(StatesGroup):
+    waiting_for_input = State()
+
+
+# сохраняем файл каждого пользователя для запроса
+async def save_to_file(user_id, messages):
+    with open(f"./requests/{user_id}.txt", "a") as f:
+        for message in messages:
+            f.write(f"{message}\n")
+
+
+last_message_time = {}
+LOG_FILE = "user_requests.txt"
+directory = "./requests"
+now = datetime.now()
+files = os.listdir(directory)
+
+for file in files:
+
+    creation_time = datetime.fromtimestamp(os.path.getctime(directory + "/" + file))
+
+    if (now - creation_time).days > 0:
+        os.remove(directory + "/" + file)
+
 def sub():
     ikb = InlineKeyboardMarkup(row_width=1)
     item1 = InlineKeyboardButton(text='Биржа', url='https://t.me/YouTubeBirz')
@@ -73,15 +110,103 @@ async def agree(call: types.CallbackQuery):
 
     item1 = InlineKeyboardButton(text='Выложить пост📝', callback_data='post')
     item2 = InlineKeyboardButton(text='Профиль📱', callback_data='profile')
-    item3 = InlineKeyboardButton(text='Сообщить о мошенничестве🚨', callback_data='scam')
-    item4 = InlineKeyboardButton(text='Проверить пользователя👮🏻', callback_data='user')
+    item3 = InlineKeyboardButton(text='[БЕТА] ChatGPT🤖', callback_data='chat')
+    item4 = InlineKeyboardButton(text='Сообщить о мошенничестве🚨', callback_data='scam')
+    item5 = InlineKeyboardButton(text='Проверить пользователя👮🏻', callback_data='user')
 
     ikb.add(item1, item2)
     ikb.add(item3)
-    ikb.add(item4)
+    ikb.add(item4, item5)
     await call.message.answer(f'<b>Добро пожаловать на автоматическую YouTube Биржу!</b>', reply_markup=ikb, parse_mode=ParseMode.HTML)
 
     await bot.answer_callback_query(call.id)
+
+@dp.callback_query_handler(lambda c: c.data == 'chat')
+async def post(call: types.CallbackQuery, state: FSMContext):
+    user_channel_status = await bot.get_chat_member(chat_id='@YouTubeBirz', user_id=call.from_user.id)
+    if user_channel_status["status"] != 'left':
+        if call.from_user.id in banned_users:
+            await call.message.answer('Вы заблокированы⛔')
+            return True
+        else:
+            ikb = InlineKeyboardMarkup(row_width=1)
+            item1 = InlineKeyboardButton(text='Меню', callback_data='menu5')
+            ikb.add(item1)
+
+            user_id = str(call.from_user.id)
+            user_data = await state.get_data()
+            if user_id not in user_data:
+                user_data[user_id] = {"username": call.from_user.username, "messages": []}
+            await call.message.answer("Привет! Я бот на базе OpenAI GPT-3. Как я могу помочь тебе сегодня?", reply_markup=ikb)
+            await Conversation.waiting_for_input.set()
+            await bot.answer_callback_query(call.id)
+    else:
+        ikb = InlineKeyboardMarkup(row_width=1)
+        item1 = InlineKeyboardButton(text='Биржа', url='https://t.me/YouTubeBirz')
+        ikb.add(item1)
+
+        await call.message.answer('Вы не подписаны на биржу!', reply_markup=ikb)
+
+
+@dp.message_handler(state=Conversation.waiting_for_input)
+async def handle_message(message: types.Message, state: FSMContext):
+        ikb = InlineKeyboardMarkup(row_width=1)
+        item1 = InlineKeyboardButton(text='Меню', callback_data='menu6')
+        ikb.add(item1)
+
+
+        current_time = time.time()
+        if message.from_user.id in last_message_time and current_time - last_message_time[message.from_user.id] < 10:
+            await message.answer(
+                "Вы можете отправлять только одно сообщение раз в 10 секунд. Пожалуйста, повторите попытку позже.")
+            return
+
+        sent_message = await message.answer("Обработка запроса...")
+
+        # обработка запросов и ответ на запрос
+        try:
+            response = await openai_async.complete(
+                "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",
+                timeout=60,
+                payload={
+                    "model": "text-davinci-003",
+                    "prompt": message.text,
+                    "temperature": 0.1,
+                    "max_tokens": 1024,
+                    "n": 1,
+                },
+            )
+            response = response.json()["choices"][0]["text"].strip()
+        except Exception as e:
+            print(e)
+            response = "Извините, произошла ошибка при обработке запроса. Пожалуйста, попробуйте еще раз позднее."
+        await sent_message.edit_text(response, reply_markup=ikb)
+
+@dp.callback_query_handler(lambda c: c.data == 'menu6', state=Conversation.waiting_for_input)
+async def menu5(call: types.CallbackQuery, state: FSMContext):
+    await state.finish()
+
+    ikb = InlineKeyboardMarkup()
+
+    item1 = InlineKeyboardButton(text='Выложить пост📝', callback_data='post')
+    item2 = InlineKeyboardButton(text='Профиль📱', callback_data='profile')
+    item3 = InlineKeyboardButton(text='[БЕТА] ChatGPT🤖', callback_data='chat')
+    item4 = InlineKeyboardButton(text='Сообщить о мошенничестве🚨', callback_data='scam')
+    item5 = InlineKeyboardButton(text='Проверить пользователя👮🏻', callback_data='user')
+
+    ikb.add(item1, item2)
+    ikb.add(item3)
+    ikb.add(item4, item5)
+    await call.message.answer(f'<b>Добро пожаловать на автоматическую YouTube Биржу!</b>', reply_markup=ikb, parse_mode=ParseMode.HTML)
+
+    await bot.answer_callback_query(call.id)
+
+@dp.callback_query_handler(lambda c: c.data == 'menu5', state=Conversation.waiting_for_input)
+async def menu5(call: types.CallbackQuery, state: FSMContext):
+    await bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
+    await state.finish()
+    await bot.answer_callback_query(call.id)
+
 
 @dp.callback_query_handler(lambda c: c.data == 'post')
 async def post(call: types.CallbackQuery):
@@ -163,12 +288,13 @@ async def yes(call: types.CallbackQuery, state: FSMContext):
 
             item1 = InlineKeyboardButton(text='Выложить пост📝', callback_data='post')
             item2 = InlineKeyboardButton(text='Профиль📱', callback_data='profile')
-            item3 = InlineKeyboardButton(text='Сообщить о мошенничестве🚨', callback_data='scam')
-            item4 = InlineKeyboardButton(text='Проверить пользователя👮🏻', callback_data='user')
+            item3 = InlineKeyboardButton(text='[БЕТА] ChatGPT🤖', callback_data='chat')
+            item4 = InlineKeyboardButton(text='Сообщить о мошенничестве🚨', callback_data='scam')
+            item5 = InlineKeyboardButton(text='Проверить пользователя👮🏻', callback_data='user')
 
             ikb.add(item1, item2)
             ikb.add(item3)
-            ikb.add(item4)
+            ikb.add(item4, item5)
             await call.message.answer(f'<b>Добро пожаловать на автоматическую YouTube Биржу!</b>', reply_markup=ikb,
                                       parse_mode=ParseMode.HTML)
 
@@ -444,12 +570,13 @@ async def close(call: types.CallbackQuery, state: FSMContext):
 
             item1 = InlineKeyboardButton(text='Выложить пост📝', callback_data='post')
             item2 = InlineKeyboardButton(text='Профиль📱', callback_data='profile')
-            item3 = InlineKeyboardButton(text='Сообщить о мошенничестве🚨', callback_data='scam')
-            item4 = InlineKeyboardButton(text='Проверить пользователя👮🏻', callback_data='user')
+            item3 = InlineKeyboardButton(text='[БЕТА] ChatGPT🤖', callback_data='chat')
+            item4 = InlineKeyboardButton(text='Сообщить о мошенничестве🚨', callback_data='scam')
+            item5 = InlineKeyboardButton(text='Проверить пользователя👮🏻', callback_data='user')
 
             ikb.add(item1, item2)
             ikb.add(item3)
-            ikb.add(item4)
+            ikb.add(item4, item5)
             await call.message.answer(f'<b>Добро пожаловать на автоматическую YouTube Биржу!</b>', reply_markup=ikb,
                                       parse_mode=ParseMode.HTML)
 

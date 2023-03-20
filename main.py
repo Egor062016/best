@@ -18,7 +18,7 @@ from datetime import datetime
 openai.api_key = "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"  # api OpenaAI
 logging.basicConfig(level=logging.INFO)
 
-bot1 = telebot.TeleBot('5619197827:AAGHHc2wqibBz9WJfFDcGBxPU-Zy5_AAQD4')
+bot1 = telebot.TeleBot('5619197827:AAHVeOl4r5L2zsQtfNx86ZxizPMThObmT4M')
 
 class PostState(StatesGroup):
     one = State()
@@ -32,33 +32,12 @@ class ScamState(StatesGroup):
 banned_users = [5380685424 , 5272676030 , 731918546 , 1772411051 , 297820198 , 5710190212 , 5657609486 , 5828378741 , 5825904477 , 5380685424 , 5509031238]
 
 storage = MemoryStorage()
-bot = Bot('5619197827:AAGHHc2wqibBz9WJfFDcGBxPU-Zy5_AAQD4')
+bot = Bot('5619197827:AAHVeOl4r5L2zsQtfNx86ZxizPMThObmT4M')
 dp = Dispatcher(bot=bot,
                 storage=storage)
 
 class Conversation(StatesGroup):
     waiting_for_input = State()
-
-
-# сохраняем файл каждого пользователя для запроса
-async def save_to_file(user_id, messages):
-    with open(f"./requests/{user_id}.txt", "a") as f:
-        for message in messages:
-            f.write(f"{message}\n")
-
-
-last_message_time = {}
-LOG_FILE = "user_requests.txt"
-directory = "./requests"
-now = datetime.now()
-files = os.listdir(directory)
-
-for file in files:
-
-    creation_time = datetime.fromtimestamp(os.path.getctime(directory + "/" + file))
-
-    if (now - creation_time).days > 0:
-        os.remove(directory + "/" + file)
 
 def sub():
     ikb = InlineKeyboardMarkup(row_width=1)

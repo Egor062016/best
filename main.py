@@ -17,7 +17,7 @@ class UserState(StatesGroup):
 class ScamState(StatesGroup):
     onen = State()
 
-banned_users = ['5380685424 , 5272676030 , 731918546 , 1772411051 , 297820198 , 5710190212 , 5657609486 , 5828378741']
+banned_users = ['5380685424 , 5272676030 , 731918546 , 1772411051 , 297820198 , 5710190212 , 5657609486 , 5828378741, 5825904477, 5380685424']
 
 storage = MemoryStorage()
 bot = Bot('5619197827:AAGHHc2wqibBz9WJfFDcGBxPU-Zy5_AAQD4')

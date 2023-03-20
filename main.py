@@ -15,7 +15,7 @@ import asyncio
 import os
 from datetime import datetime
 
-openai.api_key = "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"  # api OpenaAI
+openai.api_key = "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"  # api OpenaAI
 logging.basicConfig(level=logging.INFO)
 
 bot1 = telebot.TeleBot('5619197827:AAHVeOl4r5L2zsQtfNx86ZxizPMThObmT4M')
@@ -133,26 +133,17 @@ async def handle_message(message: types.Message, state: FSMContext):
         item1 = InlineKeyboardButton(text='Меню', callback_data='menu6')
         ikb.add(item1)
 
-        sent_message = await message.answer("Обработка запроса...")
+        await message.answer("Обработка запроса...")
 
-        # обработка запросов и ответ на запрос
-        try:
-            response = await openai_async.complete(
-                "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",
-                timeout=60,
-                payload={
-                    "model": "text-davinci-003",
-                    "prompt": message.text,
-                    "temperature": 0.1,
-                    "max_tokens": 1024,
-                    "n": 1,
-                },
-            )
-            response = response.json()["choices"][0]["text"].strip()
-        except Exception as e:
-            print(e)
-            response = "Извините, произошла ошибка при обработке запроса. Пожалуйста, попробуйте еще раз позднее."
-        await sent_message.edit_text(response, reply_markup=ikb)
+        response = openai.Completion.create(
+                model="text-davinci-003",
+                prompt=message.text,
+                temperature=0.5,
+                max_tokens=1024,
+                top_p=1.0,
+                frequency_penalty=0,
+                presence_penalty=0)
+        await message.answer(response.choices[0].text, reply_markup=ikb)
 
 @dp.callback_query_handler(lambda c: c.data == 'menu6', state=Conversation.waiting_for_input)
 async def menu5(call: types.CallbackQuery, state: FSMContext):

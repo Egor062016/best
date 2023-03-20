@@ -15,10 +15,10 @@ import asyncio
 import os
 from datetime import datetime
 
-openai.api_key = os.getenv('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')  # api OpenaAI
+os.environ["OPENAI.KEY"] = <"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">
 logging.basicConfig(level=logging.INFO)
 
-bot1 = telebot.TeleBot('5619197827:AAHVeOl4r5L2zsQtfNx86ZxizPMThObmT4M')
+bot1 = telebot.TeleBot('5619197827:AAERRo3fM1SwCE6l24DTTgpWwBNtFhFW8wM')
 
 class PostState(StatesGroup):
     one = State()
@@ -32,7 +32,7 @@ class ScamState(StatesGroup):
 banned_users = [5380685424 , 5272676030 , 731918546 , 1772411051 , 297820198 , 5710190212 , 5657609486 , 5828378741 , 5825904477 , 5380685424 , 5509031238]
 
 storage = MemoryStorage()
-bot = Bot('5619197827:AAHVeOl4r5L2zsQtfNx86ZxizPMThObmT4M')
+bot = Bot('5619197827:AAERRo3fM1SwCE6l24DTTgpWwBNtFhFW8wM')
 dp = Dispatcher(bot=bot,
                 storage=storage)
 

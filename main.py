@@ -95,6 +95,7 @@ async def post(call: types.CallbackQuery):
     if user_channel_status["status"] != 'left':
         if call.from_user.id in banned_users:
             await call.message.answer('Вы заблокированы⛔')
+            return True
         else:
             await call.message.answer('Отправьте мне объявление\n<b>(Можно добавить до 1 фото/видео)</b>', reply_markup=ikb, parse_mode='HTML')
             await PostState.one.set()
@@ -151,6 +152,8 @@ async def yes(call: types.CallbackQuery, state: FSMContext):
     if user_channel_status["status"] != 'left':
         if call.from_user.id in banned_users:
             await call.message.answer('Вы заблокированы⛔')
+            await state.finish()
+            return True
         else:
             bot1.forward_message(-1001538332180, call.message.chat.id, call.message.message_id - 1)
             bot1.send_message(1807653203, f'Пост от @{call.from_user.username}')
@@ -184,6 +187,8 @@ async def yes(call: types.CallbackQuery, state: FSMContext):
     if user_channel_status["status"] != 'left':
         if call.from_user.id in banned_users:
             await call.message.answer('Вы заблокированы⛔')
+            await state.finish()
+            return True
         else:
             await call.message.delete()
             await state.finish()
@@ -201,6 +206,8 @@ async def yes(call: types.CallbackQuery, state: FSMContext):
     if user_channel_status["status"] != 'left':
         if call.from_user.id in banned_users:
             await call.message.answer('Вы заблокированы⛔')
+            await state.finish()
+            return True
         else:
             await bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
             await bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id-1)
@@ -221,6 +228,7 @@ async def user(call: types.CallbackQuery, state: FSMContext):
     if user_channel_status["status"] != 'left':
         if call.from_user.id in banned_users:
             await call.message.answer('Вы заблокированы⛔')
+            return True
         else:
             await UserState.one1.set()
             ikb = InlineKeyboardMarkup()
@@ -269,6 +277,8 @@ async def menu1(call: types.CallbackQuery, state: FSMContext):
     if user_channel_status["status"] != 'left':
         if call.from_user.id in banned_users:
             await call.message.answer('Вы заблокированы⛔')
+            await state.finish()
+            return True
         else:
             await bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
             await state.finish()
@@ -289,6 +299,7 @@ async def menu2(call: types.CallbackQuery):
     if user_channel_status["status"] != 'left':
         if call.from_user.id in banned_users:
             await call.message.answer('Вы заблокированы⛔')
+            return True
         else:
             await bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
             await bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id - 1)
@@ -311,6 +322,7 @@ async def menu3(call: types.CallbackQuery):
     if user_channel_status["status"] != 'left':
         if call.from_user.id in banned_users:
             await call.message.answer('Вы заблокированы⛔')
+            return True
         else:
             ikb = InlineKeyboardMarkup()
 
@@ -338,6 +350,7 @@ async def menu3(call: types.CallbackQuery):
     if user_channel_status["status"] != 'left':
         if call.from_user.id in banned_users:
             await call.message.answer('Вы заблокированы⛔')
+            return True
         else:
             await bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
 
@@ -356,6 +369,7 @@ async def yes(call: types.CallbackQuery, state: FSMContext):
     if user_channel_status["status"] != 'left':
         if call.from_user.id in banned_users:
             await call.message.answer('Вы заблокированы⛔')
+            return True
         else:
             ikb = InlineKeyboardMarkup()
 
@@ -420,6 +434,8 @@ async def close(call: types.CallbackQuery, state: FSMContext):
     if user_channel_status["status"] != 'left':
         if call.from_user.id in banned_users:
             await call.message.answer('Вы заблокированы⛔')
+            await state.finish()
+            return True
         else:
             await call.message.answer('Закрыто!')
             bot1.send_message(1807653203, f'Жалоба от @{call.from_user.username}')
@@ -452,6 +468,8 @@ async def close(call: types.CallbackQuery, state: FSMContext):
     if user_channel_status["status"] != 'left':
         if call.from_user.id in banned_users:
             await call.message.answer('Вы заблокированы⛔')
+            await state.finish()
+            return True
         else:
             await call.message.delete()
             await state.finish()

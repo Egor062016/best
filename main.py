@@ -29,7 +29,7 @@ bot = Bot('5619197827:AAERRo3fM1SwCE6l24DTTgpWwBNtFhFW8wM')
 dp = Dispatcher(bot=bot,
                 storage=storage)
 
-openai.api_key = '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'
+openai.api_key = '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'
 
 class Conversation(StatesGroup):
     waiting_for_input = State()

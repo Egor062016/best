@@ -15,8 +15,9 @@ import asyncio
 import os
 from datetime import datetime
 
-openai.api_key = "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"
 logging.basicConfig(level=logging.INFO)
+
+openai.api_key = "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"
 
 bot1 = telebot.TeleBot('5619197827:AAERRo3fM1SwCE6l24DTTgpWwBNtFhFW8wM')
 

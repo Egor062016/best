@@ -17,8 +17,6 @@ from datetime import datetime
 
 logging.basicConfig(level=logging.INFO)
 
-openai.api_key = "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"
-
 bot1 = telebot.TeleBot('5619197827:AAERRo3fM1SwCE6l24DTTgpWwBNtFhFW8wM')
 
 class PostState(StatesGroup):
@@ -37,6 +35,8 @@ bot = Bot('5619197827:AAERRo3fM1SwCE6l24DTTgpWwBNtFhFW8wM')
 dp = Dispatcher(bot=bot,
                 storage=storage)
 
+openai.api_key = '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'
+
 class Conversation(StatesGroup):
     waiting_for_input = State()
 
@@ -45,33 +45,9 @@ def sub():
     item1 = InlineKeyboardButton(text='Биржа', url='https://t.me/YouTubeBirz')
     ikb.add(item1)
 
-joinedFile = open("joined.txt", 'r')
-joinedUsers = set ()
-for line in joinedFile:
-    joinedUsers.add(line.strip())
-joinedFile.close()
-
-@dp.message_handler(commands=['sendall'])
-async def send_all(message: types.Message):
-    if message.chat.id == 1807653203:
-        await message.answer('Start')
-        for i in joinedUsers:
-            await bot.send_message(i, message.text [message.text.find(' '):])
-
-        await message.answer('Done')
-    else:
-        await message.answer('Error')
 
 @dp.message_handler(commands=['start'])
 async def start_command(message: types.Message):
-    if not str(message.chat.id) in joinedUsers:
-        joinedFile = open("joined.txt", "a")
-        joinedFile.write(str(message.chat.id) + "\n")
-        joinedUsers.add(message.chat.id)
-
-    else:
-        pass
-
     await bot.delete_message(message.from_user.id, message.message_id)
 
     ikb = InlineKeyboardMarkup()
@@ -113,38 +89,41 @@ async def post(call: types.CallbackQuery, state: FSMContext):
             item1 = InlineKeyboardButton(text='Меню', callback_data='menu5')
             ikb.add(item1)
 
-            user_id = str(call.from_user.id)
-            user_data = await state.get_data()
-            if user_id not in user_data:
-                user_data[user_id] = {"username": call.from_user.username, "messages": []}
             await call.message.answer("Привет! Я бот на базе OpenAI GPT-3. Как я могу помочь тебе сегодня?", reply_markup=ikb)
             await Conversation.waiting_for_input.set()
             await bot.answer_callback_query(call.id)
+
+            @dp.message_handler(state=Conversation.waiting_for_input)
+            async def gpt_answer(message: types.Message, state: FSMContext):
+                ikb = InlineKeyboardMarkup(row_width=1)
+                item1 = InlineKeyboardButton(text='Меню', callback_data='menu6')
+                ikb.add(item1)
+
+                await message.answer("ChatGPT: Генерирую ответ ...")
+
+                model_engine = "text-davinci-003"
+                max_tokens = 128  # default 1024
+                prompt = (message.text)
+                completion = openai.Completion.create(
+                    engine=model_engine,
+                    prompt=prompt,
+                    max_tokens=max_tokens,
+                    temperature=0.5,
+                    top_p=1,
+                    frequency_penalty=0,
+                    presence_penalty=0
+                )
+
+                translated_result = (completion.choices[0].text)
+                await message.answer(translated_result, reply_markup=ikb)
+
+
     else:
         ikb = InlineKeyboardMarkup(row_width=1)
         item1 = InlineKeyboardButton(text='Биржа', url='https://t.me/YouTubeBirz')
         ikb.add(item1)
 
         await call.message.answer('Вы не подписаны на биржу!', reply_markup=ikb)
-
-
-@dp.message_handler(state=Conversation.waiting_for_input)
-async def handle_message(message: types.Message, state: FSMContext):
-        ikb = InlineKeyboardMarkup(row_width=1)
-        item1 = InlineKeyboardButton(text='Меню', callback_data='menu6')
-        ikb.add(item1)
-
-        await message.answer("Обработка запроса...")
-
-        response = openai.Completion.create(
-                model="text-davinci-003",
-                prompt=message.text,
-                temperature=0.5,
-                max_tokens=1024,
-                top_p=1.0,
-                frequency_penalty=0,
-                presence_penalty=0)
-        await message.answer(response.choices[0].text, reply_markup=ikb)
 
 @dp.callback_query_handler(lambda c: c.data == 'menu6', state=Conversation.waiting_for_input)
 async def menu5(call: types.CallbackQuery, state: FSMContext):
@@ -161,7 +140,8 @@ async def menu5(call: types.CallbackQuery, state: FSMContext):
     ikb.add(item1, item2)
     ikb.add(item3)
     ikb.add(item4, item5)
-    await call.message.answer(f'<b>Добро пожаловать на автоматическую YouTube Биржу!</b>', reply_markup=ikb, parse_mode=ParseMode.HTML)
+    await call.message.answer(f'<b>Добро пожаловать на автоматическую YouTube Биржу!</b>', reply_markup=ikb,
+                              parse_mode=ParseMode.HTML)
 
     await bot.answer_callback_query(call.id)
 

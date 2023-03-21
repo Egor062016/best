@@ -15,7 +15,7 @@ import asyncio
 import os
 from datetime import datetime
 
-os.environ["OPENAI.KEY"] = <"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">
+os.environ["OPENAI.KEY"] = "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"
 logging.basicConfig(level=logging.INFO)
 
 bot1 = telebot.TeleBot('5619197827:AAERRo3fM1SwCE6l24DTTgpWwBNtFhFW8wM')

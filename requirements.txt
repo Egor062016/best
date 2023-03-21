@@ -1,4 +1,5 @@
+pytelegrambotapi
 aiogram
 openai
 asyncio
-gpytranslate
+datetime

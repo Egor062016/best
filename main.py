@@ -547,4 +547,4 @@ async def close(call: types.CallbackQuery, state: FSMContext):
     await bot.answer_callback_query(call.id)
 
 if __name__ == '__main__':
-    executor.start_polling(dp)
+    executor.start_polling(dp, skip_updates=True)

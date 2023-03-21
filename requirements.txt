@@ -3,4 +3,3 @@ aiogram
 openai
 asyncio
 datetime
-os

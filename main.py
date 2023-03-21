@@ -1,6 +1,5 @@
 import logging
 import openai
-import asyncio
 from gpytranslate import Translator
 
 from aiogram import Bot, Dispatcher, executor, types
@@ -12,7 +11,7 @@ logging.basicConfig(level=logging.INFO)
 t = Translator()
 
 # init openai
-openai.api_key = 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
+openai.api_key = "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"
 
 # init aiogram
 bot = Bot("5985844276:AAHVRP7ofOfoFWPIMtnU5g6gWf0u-kXblgI")
@@ -25,10 +24,9 @@ async def gpt_answer(message: types.Message):
 
     model_engine = "text-davinci-003"
     max_tokens = 128  # default 1024
-    prompt = await t.translate(message.text, targetlang="en")
     completion = openai.Completion.create(
         engine=model_engine,
-        prompt=prompt.text,
+        prompt=message.text,
         max_tokens=max_tokens,
         temperature=0.5,
         top_p=1,
@@ -37,8 +35,7 @@ async def gpt_answer(message: types.Message):
     )
 
     await message.answer("ChatGPT: Генерирую ответ ...")
-    translated_result = await t.translate(completion.choices[0].text, targetlang="ru")
-    await message.answer(translated_result.text)
+    await message.answer(completion.choices[0].text)
 
 # run long-polling
 if __name__ == "__main__":

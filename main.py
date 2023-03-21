@@ -8,12 +8,6 @@ import telebot
 
 import openai
 import logging
-import time
-import json
-import openai_async
-import asyncio
-import os
-from datetime import datetime
 
 logging.basicConfig(level=logging.INFO)
 

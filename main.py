@@ -8,6 +8,7 @@ import telebot
 
 import openai
 import logging
+import os
 
 logging.basicConfig(level=logging.INFO)
 
@@ -29,7 +30,7 @@ bot = Bot('5619197827:AAERRo3fM1SwCE6l24DTTgpWwBNtFhFW8wM')
 dp = Dispatcher(bot=bot,
                 storage=storage)
 
-openai.api_key = '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'
+openai.api_key = os.environ('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')
 
 class Conversation(StatesGroup):
     waiting_for_input = State()

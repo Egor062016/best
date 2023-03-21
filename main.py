@@ -12,7 +12,7 @@ logging.basicConfig(level=logging.INFO)
 t = Translator()
 
 # init openai
-openai.api_key = "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"
+openai.api_key = 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
 
 # init aiogram
 bot = Bot("5985844276:AAHVRP7ofOfoFWPIMtnU5g6gWf0u-kXblgI")

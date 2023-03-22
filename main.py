@@ -11,7 +11,7 @@ import logging
 
 logging.basicConfig(level=logging.INFO)
 
-bot1 = telebot.TeleBot('5619197827:AAERRo3fM1SwCE6l24DTTgpWwBNtFhFW8wM')
+bot1 = telebot.TeleBot('5619197827:AAGCiBtzc9Ked8Sqfauy8_m8wPrAmR61dG0')
 
 class PostState(StatesGroup):
     one = State()
@@ -25,7 +25,7 @@ class ScamState(StatesGroup):
 banned_users = [5380685424 , 5272676030 , 731918546 , 1772411051 , 297820198 , 5710190212 , 5657609486 , 5828378741 , 5825904477 , 5380685424 , 5509031238]
 
 storage = MemoryStorage()
-bot = Bot('5619197827:AAERRo3fM1SwCE6l24DTTgpWwBNtFhFW8wM')
+bot = Bot('5619197827:AAGCiBtzc9Ked8Sqfauy8_m8wPrAmR61dG0')
 dp = Dispatcher(bot=bot,
                 storage=storage)
 

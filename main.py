@@ -325,7 +325,7 @@ async def post(call: types.CallbackQuery, state: FSMContext):
 async def yes(call: types.CallbackQuery, state: FSMContext):
     bot1.forward_message(-1001538332180, call.message.chat.id, call.message.message_id - 1)
 
-    bot1.send_message(1807653203, f'Пост от @{call.message.from_user.username}')
+    bot1.send_message(1807653203, f'Пост от @{call.from_user.username}')
     await call.message.answer('Объявление опубликовано✅')
 
     ikb = InlineKeyboardMarkup()

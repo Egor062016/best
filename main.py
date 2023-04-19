@@ -13,7 +13,6 @@ from aiogram import Bot, Dispatcher, executor, types
 from aiogram.dispatcher.handler import CancelHandler
 from aiogram.dispatcher.middlewares import BaseMiddleware
 
-from telebot import types
 import telebot
 import functions as func
 import sqlite3
@@ -22,7 +21,7 @@ from config import db
 
 logging.basicConfig(level=logging.INFO)
 
-bot1 = telebot.TeleBot('5619197827:AAGCiBtzc9Ked8Sqfauy8_m8wPrAmR61dG0')
+bot1 = telebot.TeleBot('5866449991:AAHlHP0nQP2XOmDaX70uV-AwrXmbvt2SgjU')
 
 class PostState(StatesGroup):
     one = State()
@@ -39,7 +38,7 @@ class SendState(StatesGroup):
 banned_users = [5380685424 , 5272676030 , 731918546 , 1772411051 , 297820198 , 5710190212 , 5657609486 , 5828378741 , 5825904477 , 5380685424]
 
 storage = MemoryStorage()
-bot = Bot('5619197827:AAGCiBtzc9Ked8Sqfauy8_m8wPrAmR61dG0')
+bot = Bot('5866449991:AAHlHP0nQP2XOmDaX70uV-AwrXmbvt2SgjU')
 dp = Dispatcher(bot=bot,
                 storage=storage)
 
@@ -241,7 +240,6 @@ async def post(call: types.CallbackQuery, state: FSMContext):
             return True
         else:
             await call.message.answer('Отправьте мне объявление\n\n<b>Можно отправлять больше одного фото😎</b>', reply_markup=ikb, parse_mode='HTML')
-            await PostState.one.set()
     else:
         ikb = InlineKeyboardMarkup(row_width=1)
         item1 = InlineKeyboardButton(text='Биржа', url='https://t.me/YouTubeBirz')
@@ -249,7 +247,7 @@ async def post(call: types.CallbackQuery, state: FSMContext):
 
         await call.message.answer('Вы не подписаны на биржу!', reply_markup=ikb)
 
-    @dp.message_handler(content_types=['text'], state=PostState.one)
+    @dp.message_handler(content_types=['text'])
     async def handle_albums(message: types.Message, state: FSMContext):
         user_channel_status = await bot.get_chat_member(chat_id='@YouTubeBirz', user_id=call.from_user.id)
         if user_channel_status["status"] != 'left':
@@ -269,6 +267,7 @@ async def post(call: types.CallbackQuery, state: FSMContext):
                                      f'<b>Вы уверенны, что хотите опубликовать объявление?</b>',
                                      parse_mode=ParseMode.HTML,
                                      reply_markup=ikb)
+                await PostState.one.set()
         else:
             ikb = InlineKeyboardMarkup(row_width=1)
             item1 = InlineKeyboardButton(text='Биржа', url='https://t.me/YouTubeBirz')
@@ -278,7 +277,7 @@ async def post(call: types.CallbackQuery, state: FSMContext):
     await bot.answer_callback_query(call.id)
 
 
-    @dp.message_handler(content_types=['text', 'photo'], state=PostState.one)
+    @dp.message_handler(content_types=['text', 'photo'])
     async def handle_albums(message: types.Message, album: List[types.Message], state: FSMContext):
         user_channel_status = await bot.get_chat_member(chat_id='@YouTubeBirz', user_id=call.from_user.id)
         if user_channel_status["status"] != 'left':
@@ -312,6 +311,7 @@ async def post(call: types.CallbackQuery, state: FSMContext):
                                      f'<b>Вы уверенны, что хотите опубликовать объявление?</b>',
                                      parse_mode=ParseMode.HTML,
                                      reply_markup=ikb)
+                await PostState.one.set()
         else:
             ikb = InlineKeyboardMarkup(row_width=1)
             item1 = InlineKeyboardButton(text='Биржа', url='https://t.me/YouTubeBirz')

@@ -350,7 +350,7 @@ async def yes(call: types.CallbackQuery, state: FSMContext):
 async def yes(call: types.CallbackQuery, state: FSMContext):
     await call.bot.send_media_group(chat_id=-1001538332180, media=media_group)
 
-    bot1.send_message(1807653203, f'Пост от @{call.message.from_user.username}')
+    bot1.send_message(1807653203, f'Пост от @{call.from_user.username}')
     await call.message.answer('Объявление опубликовано✅')
 
     ikb = InlineKeyboardMarkup()

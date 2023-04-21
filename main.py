@@ -197,7 +197,7 @@ async def agree(call: types.CallbackQuery):
     ikb.add(item3)
     ikb.add(item4)
 
-    text=hlink('автоматическую YouTube Биржу', 'https://t.me/YouTubeBirz', disable_web_page_preview=True)
+    text=hlink('автоматическую YouTube Биржу', 'https://t.me/YouTubeBirz', disable_web_page_preview=False)
 
     await call.message.answer(f'<b>Добро пожаловать на text!</b>', reply_markup=ikb, parse_mode=ParseMode.HTML)
 

@@ -218,7 +218,7 @@ async def menu5(call: types.CallbackQuery, state: FSMContext):
     ikb.add(item3)
     ikb.add(item4)
     await call.message.answer(f'<b>Добро пожаловать на автоматическую YouTube Биржу!</b>', reply_markup=ikb,
-                              parse_mode=ParseMode.HTML)
+                              parse_mode=ParseMode.HTML, disable_web_page_preview=True)
 
     await bot.answer_callback_query(call.id)
 
@@ -344,7 +344,7 @@ async def yes(call: types.CallbackQuery, state: FSMContext):
     ikb.add(item4)
     await call.message.answer(f'<b>Добро пожаловать на автоматическую YouTube Биржу!</b>',
                               reply_markup=ikb,
-                              parse_mode=ParseMode.HTML)
+                              parse_mode=ParseMode.HTML, disable_web_page_preview=True)
 
     await state.finish()
     await bot.answer_callback_query(call.id)
@@ -369,7 +369,7 @@ async def yes(call: types.CallbackQuery, state: FSMContext):
     ikb.add(item4)
     await call.message.answer(f'<b>Добро пожаловать на автоматическую YouTube Биржу!</b>',
                          reply_markup=ikb,
-                         parse_mode=ParseMode.HTML)
+                         parse_mode=ParseMode.HTML, disable_web_page_preview=True)
 
     await state.finish()
     await bot.answer_callback_query(call.id)
@@ -417,7 +417,7 @@ async def yes(call: types.CallbackQuery, state: FSMContext):
             ikb.add(item4)
             await call.message.answer(f'<b>Добро пожаловать на автоматическую YouTube Биржу!</b>',
                                       reply_markup=ikb,
-                                      parse_mode=ParseMode.HTML)
+                                      parse_mode=ParseMode.HTML, disable_web_page_preview=True)
     else:
         ikb = InlineKeyboardMarkup(row_width=1)
         item1 = InlineKeyboardButton(text='Биржа', url='https://t.me/YouTubeBirz')
@@ -655,7 +655,7 @@ async def close(call: types.CallbackQuery, state: FSMContext):
             ikb.add(item3)
             ikb.add(item4)
             await call.message.answer(f'<b>Добро пожаловать на автоматическую YouTube Биржу!</b>', reply_markup=ikb,
-                                      parse_mode=ParseMode.HTML)
+                                      parse_mode=ParseMode.HTML, disable_web_page_preview=True)
 
             await state.finish()
     else:

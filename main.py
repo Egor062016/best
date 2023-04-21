@@ -179,7 +179,7 @@ async def start_command(message: types.Message):
     item1 = InlineKeyboardButton(text='Я согласен✅', callback_data='agree')
 
     ikb.add(item1)
-    await message.answer(f'<b>Я ознакомлен с <a href="https://telegra.ph/Pravila-ispolzovaniya-12-13">правилами использования</a> и соглашаюсь с ними</b>', parse_mode=ParseMode.HTML, reply_markup=ikb)
+    await message.answer(f'<b>Я ознакомлен с <a href="https://telegra.ph/Pravila-ispolzovaniya-12-13">правилами использования</a> и соглашаюсь с ними</b>', parse_mode=ParseMode.HTML, reply_markup=ikb, disable_web_page_preview=True)
 
 
 @dp.callback_query_handler(lambda c: c.data =='agree')

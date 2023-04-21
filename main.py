@@ -3,6 +3,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.types import ParseMode
+from aiogram.utils.markdown import hlink
 
 import logging
 
@@ -195,7 +196,10 @@ async def agree(call: types.CallbackQuery):
     ikb.add(item1, item2)
     ikb.add(item3)
     ikb.add(item4)
-    await call.message.answer(f'<b>Добро пожаловать на автоматическую YouTube Биржу!</b>', reply_markup=ikb, parse_mode=ParseMode.HTML)
+
+    text=hlink('автоматическую YouTube Биржу', 'https://t.me/YouTubeBirz')
+
+    await call.message.answer(f'<b>Добро пожаловать на {text}!</b>', reply_markup=ikb, parse_mode=ParseMode.HTML)
 
     await bot.answer_callback_query(call.id)
 

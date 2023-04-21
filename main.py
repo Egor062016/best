@@ -199,7 +199,7 @@ async def agree(call: types.CallbackQuery):
 
     text=hlink('автоматическую YouTube Биржу', 'https://t.me/YouTubeBirz')
 
-    await call.message.answer(f'<b>Добро пожаловать на text!</b>', reply_markup=ikb, parse_mode=ParseMode.HTML, disable_web_page_preview=True)
+    await call.message.answer(f'<b>Добро пожаловать на {text}!</b>', reply_markup=ikb, parse_mode=ParseMode.HTML, disable_web_page_preview=True)
 
     await bot.answer_callback_query(call.id)
 

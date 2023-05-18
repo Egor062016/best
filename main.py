@@ -22,7 +22,7 @@ from config import db
 
 logging.basicConfig(level=logging.INFO)
 
-bot1 = telebot.TeleBot('5619197827:AAHyYqyWfLGHn5l3n--lC-DPI7Vjp17U9i0')
+bot1 = telebot.TeleBot('5619197827:AAFTgUJy7C_0YKMgYoT-ZB8_se2FPf244xA')
 
 
 class PostState(StatesGroup):
@@ -47,7 +47,7 @@ banned_users = [
 ]
 
 storage = MemoryStorage()
-bot = Bot('5619197827:AAHyYqyWfLGHn5l3n--lC-DPI7Vjp17U9i0')
+bot = Bot('5619197827:AAFTgUJy7C_0YKMgYoT-ZB8_se2FPf244xA')
 dp = Dispatcher(bot=bot, storage=storage)
 
 bot_username = bot1.get_me().username
